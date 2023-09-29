@@ -188,8 +188,7 @@ const validatePracticalExperience = () => {
   return true;
 };
 
-const validateForm = (e) => {
-  e.preventDefault();
+const validateForm = () => {
   if (!validateGeneralInformation()) {
     return false;
   } else if (!validateEducationalExperience()) {
