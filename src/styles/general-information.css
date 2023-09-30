@@ -1,0 +1,16 @@
+.labels-container {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: grid;
+}
+
+label > input {
+  justify-self: center;
+}
+
+span {
+  color: #991b1b;
+}

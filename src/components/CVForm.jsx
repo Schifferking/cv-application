@@ -1,3 +1,4 @@
+import "../styles/cv-form.css";
 import EducationalExperience from "./EducationalExperience";
 import GeneralInformation from "./GeneralInformation";
 import PracticalExperience from "./PracticalExperience";

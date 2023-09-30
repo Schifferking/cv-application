@@ -1,10 +1,12 @@
+import "../styles/cv.css";
+
 function CV({ setIsDataValid, formData }) {
   function handleClick() {
     setIsDataValid(false);
   }
 
   return (
-    <>
+    <div className="cv-info-container">
       <p>
         <b>First name: </b>
         {formData.firstName}
@@ -53,8 +55,10 @@ function CV({ setIsDataValid, formData }) {
         <b>Job end date: </b>
         {formData.jobEndDate}
       </p>
-      <button onClick={() => handleClick()}>Edit CV</button>
-    </>
+      <button className="edit-button" onClick={() => handleClick()}>
+        Edit CV
+      </button>
+    </div>
   );
 }
 
