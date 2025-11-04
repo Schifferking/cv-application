@@ -1,4 +1,4 @@
-function EducationalExperience({ formData, setFormData }) {
+function EducationalExperience({ errors, isBefore, register }) {
   return (
     <section>
       <h2>Educational Experience</h2>
@@ -8,42 +8,46 @@ function EducationalExperience({ formData, setFormData }) {
           <input
             type="text"
             className="school-name"
-            onChange={(event) =>
-              setFormData({ ...formData, schoolName: event.target.value })
-            }
-            required
-            value={formData.schoolName}
+            {...register("schoolName", {
+              required: "School name is required",
+            })}
           />
-          <span className="school-name-error"></span>
+          {errors.schoolName?.message && (
+            <small>{errors.schoolName.message}</small>
+          )}
         </label>
+
         <label>
           * Study title{" "}
           <input
             type="text"
             className="study-title"
-            onChange={(event) =>
-              setFormData({ ...formData, studyTitle: event.target.value })
-            }
-            required
-            value={formData.studyTitle}
+            {...register("studyTitle", {
+              required: "Study title is required",
+            })}
           />
-          <span className="study-title-error"></span>
+          {errors.studyTitle?.message && (
+            <small>{errors.studyTitle.message}</small>
+          )}
         </label>
+
         <label>
           * Study date{" "}
           <input
             type="date"
             className="study-date"
-            onChange={(event) =>
-              setFormData({
-                ...formData,
-                studyDate: event.target.value,
-              })
-            }
-            required
-            value={formData.studyDate}
+            {...register("studyDate", {
+              required: "Study date is required",
+              validate: {
+                maxDate: (date) =>
+                  isBefore(new Date(date), new Date()) ||
+                  "Study date must be until today",
+              },
+            })}
           />
-          <span className="study-date-error"></span>
+          {errors.studyDate?.message && (
+            <small>{errors.studyDate.message}</small>
+          )}
         </label>
       </div>
     </section>

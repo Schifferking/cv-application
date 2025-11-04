@@ -1,36 +1,64 @@
-import "../styles/cv-form.css";
-import EducationalExperience from "./EducationalExperience";
+import { useForm } from "react-hook-form";
 import GeneralInformation from "./GeneralInformation";
+import EducationalExperience from "./EducationalExperience";
 import PracticalExperience from "./PracticalExperience";
-import validateForm from "../form-validation";
+import "../styles/cv-form.css";
 
-function CVForm({ setIsDataValid, formData, setFormData }) {
-  function handleSubmit(event) {
+function CVForm({ onSubmit, setFormData }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    getValues,
+  } = useForm({
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      phoneNumber: "",
+      schoolName: "",
+      studyTitle: "",
+      studyDate: "",
+      companyName: "",
+      positionTitle: "",
+      responsibilities: "",
+      jobStartDate: "",
+      jobEndDate: "",
+    },
+  });
+
+  const isBefore = (firstDate, secondDate) => {
+    return firstDate < secondDate;
+  };
+  const isStartDateBeforeEndDate = (values) => {
+    return isBefore(new Date(values.jobStartDate), new Date(values.jobEndDate));
+  };
+
+  const onSubmitForm = (data, event) => {
     event.preventDefault();
-    const result = validateForm();
-    if (result) {
-      setIsDataValid(true);
-    }
-  }
+    setFormData(data);
+    onSubmit();
+  };
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <GeneralInformation
-          formData={formData}
-          setFormData={setFormData}
-        ></GeneralInformation>
+    <div className="form-container">
+      <form onSubmit={handleSubmit(onSubmitForm)}>
+        <GeneralInformation errors={errors} register={register} />
         <EducationalExperience
-          formData={formData}
-          setFormData={setFormData}
-        ></EducationalExperience>
+          errors={errors}
+          isBefore={isBefore}
+          register={register}
+        />
         <PracticalExperience
-          formData={formData}
-          setFormData={setFormData}
-        ></PracticalExperience>
+          errors={errors}
+          getValues={getValues}
+          isBefore={isBefore}
+          isStartDateBeforeEndDate={isStartDateBeforeEndDate}
+          register={register}
+        />
         <button type="submit">Submit CV</button>
       </form>
-    </>
+    </div>
   );
 }
 

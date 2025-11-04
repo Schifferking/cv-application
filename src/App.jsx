@@ -1,42 +1,23 @@
 import { useState } from "react";
-import "./App.css";
-import CVForm from "./components/CVForm";
 import CV from "./components/CV";
-
-function GetFormattedDate(date = new Date()) {
-  return date.toISOString().substring(0, 10);
-}
-
-const initialFormData = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  phoneNumber: "",
-  schoolName: "",
-  studyTitle: "",
-  studyDate: GetFormattedDate(),
-  companyName: "",
-  positionTitle: "",
-  responsibilities: "",
-  jobStartDate: GetFormattedDate(),
-  jobEndDate: GetFormattedDate(),
-};
+import CVForm from "./components/CVForm";
+import "./App.css";
 
 function App() {
   const [isDataValid, setIsDataValid] = useState(false);
-  const [formData, setFormData] = useState(initialFormData);
+  const [formData, setFormData] = useState({});
+
+  const handleSubmit = () => {
+    setIsDataValid(true);
+  };
 
   return (
     <>
       <h1>CV application</h1>
       {isDataValid ? (
-        <CV setIsDataValid={setIsDataValid} formData={formData}></CV>
+        <CV formData={formData} setIsDataValid={setIsDataValid}></CV>
       ) : (
-        <CVForm
-          setIsDataValid={setIsDataValid}
-          formData={formData}
-          setFormData={setFormData}
-        ></CVForm>
+        <CVForm onSubmit={handleSubmit} setFormData={setFormData}></CVForm>
       )}
     </>
   );

@@ -1,4 +1,10 @@
-function PracticalExperience({ formData, setFormData }) {
+function PracticalExperience({
+  errors,
+  getValues,
+  isBefore,
+  isStartDateBeforeEndDate,
+  register,
+}) {
   return (
     <section>
       <h2>Practical Experience</h2>
@@ -8,64 +14,82 @@ function PracticalExperience({ formData, setFormData }) {
           <input
             type="text"
             className="company-name"
-            onChange={(event) =>
-              setFormData({ ...formData, companyName: event.target.value })
-            }
-            required
-            value={formData.companyName}
+            {...register("companyName", {
+              required: "Company name is required",
+            })}
           />
-          <span className="company-name-error"></span>
+          {errors.companyName?.message && (
+            <small>{errors.companyName.message}</small>
+          )}
         </label>
+
         <label>
           * Position title{" "}
           <input
             type="text"
             className="position-title"
-            onChange={(event) =>
-              setFormData({ ...formData, positionTitle: event.target.value })
-            }
-            required
-            value={formData.positionTitle}
+            {...register("positionTitle", {
+              required: "Position title is required",
+            })}
           />
-          <span className="position-title-error"></span>
+          {errors.positionTitle?.message && (
+            <small>{errors.positionTitle.message}</small>
+          )}
         </label>
+
         <label>
           * Main responsibilities{" "}
           <textarea
             className="responsibilities"
-            onChange={(event) =>
-              setFormData({ ...formData, responsibilities: event.target.value })
-            }
-            required
-            value={formData.responsibilities}
+            {...register("responsibilities", {
+              required: "Responsibilities are required",
+            })}
           />
-          <span className="responsibilities-error"></span>
+          {errors.responsibilities?.message && (
+            <small>{errors.responsibilities.message}</small>
+          )}
         </label>
+
         <label>
           * Job start date{" "}
           <input
             type="date"
             className="job-start-date"
-            onChange={(event) =>
-              setFormData({ ...formData, jobStartDate: event.target.value })
-            }
-            required
-            value={formData.jobStartDate}
+            {...register("jobStartDate", {
+              required: "Job start date is required",
+              validate: {
+                minDate: () =>
+                  isStartDateBeforeEndDate(getValues()) ||
+                  "Job start date must be earlier than job end date",
+                maxDate: (date) =>
+                  isBefore(new Date(date), new Date()) ||
+                  "Job start date must be until today",
+              },
+            })}
           />
-          <span className="job-start-date-error"></span>
+          {errors.jobStartDate?.message && (
+            <small>{errors.jobStartDate.message}</small>
+          )}
         </label>
+
         <label>
           * Job end date{" "}
           <input
             type="date"
             className="job-end-date"
-            onChange={(event) =>
-              setFormData({ ...formData, jobEndDate: event.target.value })
-            }
-            required
-            value={formData.jobEndDate}
+            {...register("jobEndDate", {
+              required: "Job end date is required",
+              valuesAsDate: true,
+              validate: {
+                maxDate: (date) =>
+                  isBefore(new Date(date), new Date()) ||
+                  "Job end date must be until today",
+              },
+            })}
           />
-          <span className="job-end-date-error"></span>
+          {errors.jobEndDate?.message && (
+            <small>{errors.jobEndDate.message}</small>
+          )}
         </label>
       </div>
     </section>
